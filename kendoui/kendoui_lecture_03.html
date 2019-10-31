@@ -1,0 +1,178 @@
+<!-- 
+    * Kendo UI 정리노트 03
+    * 작성 : 박종진
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>KENDO UI 정리노트</title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.common.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.rtl.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.default.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.mobile.all.min.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.1.220/js/kendo.all.min.js"></script>
+</head>
+<body>
+
+<h2>※ Widget Basics - Method & Events</h2>
+<h3>- KENDO UI Widget 의 instancd 생성을 통해 메소드를 사용하는 방법과 event를 등록하는 방법을 알아본다.</h3><br/>
+
+
+<!-- 01. 위젯 인스턴스 생성 -->
+<h4>01. widget instance 생성하게 되면 표준 JavaScript 메서드 구문을 사용할 수 있다. 예) focus()</h4>
+<p>Animal1: <input id="animal1" /></p>
+<script>
+    // 위젯 인스턴스 생성. create a new widget instance
+    $("#animal1").kendoAutoComplete({ dataSource: [ "Ant", "Antilope", "Badger", "Beaver", "Bird" ] });
+
+    // 위젯 인스턴스. retrieve the widget instance
+    var autoComplete  = $("#animal1").data("kendoAutoComplete");  // 1. The jQuery Data Method
+    var autoComplete2 = $("#animal1").getKendoAutoComplete();     // 2. The getKendo* Method
+
+    console.log("autoComplete: ", autoComplete);
+    console.log("autoComplete2: ", autoComplete2);
+    
+    // 위젯 인스턴스를 사용할 수있게되면 표준 JavaScript 메서드 구문을 사용하여 메서드를 호출 할 수 있다.
+    autoComplete.focus(); // focus the widget
+</script>
+
+
+<!-- 02. 위젯 초기화시 이벤트 핸들러 추가 -->
+<h4>02. 위젯 초기화시 이벤트 핸들러 추가할 수 있다.</h4>
+<p>Animal2: <input id="animal2" /> * onchange event</p>
+<script>
+    // Event Binding during Initialization
+    $("#animal2").kendoAutoComplete({
+      dataSource: [ "Ant", "Antilope", "Badger", "Beaver", "Bird" ],
+      change: function(e) {
+        alert("change event handler");
+      }
+    });
+</script>
+
+
+<!-- 03. Event Binding after Initialization -->
+<h4>03. 위젯 생성후 이벤트 핸들러 추가할 수 있다.</h4>
+<p>Animal3: <input id="animal3" /> * change, open event 추가. open event는 단 한번만 수행됨</p>
+<script>
+    $("#animal3").kendoAutoComplete({
+        dataSource: [ "Ant", "Antilope", "Badger", "Beaver", "Bird" ]
+    });
+
+    // instance
+    var autocomplete = $("#animal3").data("kendoAutoComplete");
+
+    // attach an event handler that will be executed each time the event is fired
+    // 객체 생성 이후 이벤트 추가
+    autocomplete.bind("change", function(e) {
+        console.log("change event handler");
+    });
+
+    // attach an event handler that will be executed only the first time the event is fired
+    // 한번만 실행됨
+    autocomplete.one("open", function(e) {
+        console.log("open event handler");
+    });
+</script>
+
+
+<!-- 04. Event Handler Arguments -->
+<h4>04. 각 Kendo UI 위젯은 하나의 인수를 소위 "이벤트 객체"인 이벤트 핸들러에 전달한다.</h4>
+<p>Animal4: <input id="animal4" /> * e.sender</p>
+<script>
+    $("#animal4").kendoAutoComplete({
+        dataSource: [ "Ant", "Antilope", "Badger", "Beaver", "Bird" ],
+        open: function(e) {
+            var autocomplete = e.sender;
+            console.log("animal4:");
+            console.log(autocomplete);
+        }
+    });
+</script>
+
+
+<!-- 05. Preventing Events -->
+<h4>05. 특정 위젯 이벤트를 preventDefault()를 호출하여 예방할 수 있다.</h4>
+<p>Animal5: <input id="animal5" /> * open event 방지</p>
+<script>
+    $("#animal5").kendoAutoComplete({
+        dataSource: [ "Ant", "Antilope", "Badger", "Beaver", "Bird" ]
+    });
+
+    var autoComplete = $("#animal5").data("kendoAutoComplete");
+
+    // prevent the autocomplete from opening the suggestions list
+    autoComplete.bind('open', function(e) {
+        e.preventDefault();
+    });
+</script>
+
+<!-- 06. Unbinding from Events -->
+<h4>06. unbind를 통해 event를 해제할 수 있다.</h4>
+<p>
+    Animal6: <input id="animal6" /> 
+    <button id="unbindButton">Unbind event</button>
+</p>
+<script>
+    var handler = function(e) { console.log(e); };
+
+    $("#animal6").kendoAutoComplete({ dataSource: [ "Ant", "Antilope", "Badger", "Beaver", "Bird" ] });
+
+    var autoComplete = $("#animal6").data("kendoAutoComplete");
+    autoComplete.bind("open", handler);
+
+    $("#unbindButton").on("click", function() {
+        autoComplete.unbind("open", handler);
+    });
+</script>
+<br>
+
+<!-- 07. destroy event -->
+<h4>07. grid widjet 생성과 파괴</h4>
+<button id="destroyButton">destroy event</button>
+<button id="emptyButton">empty event</button>
+<button id="showButton">show event</button>
+<button id="removeButton">remove event</button>
+<button id="valueButton">value</button>
+<div id="grid"></div>
+<script>
+    $("#grid").kendoGrid({
+        height: 100,
+        columns:[
+            { field: "FirstName", title: "First Name" },
+            { field: "LastName",  title: "Last Name"  }
+        ],
+        dataSource: {
+            data: [
+                { FirstName: "John", LastName: "Doe" },
+                { FirstName: "Jane", LastName: "Doe" }
+            ]
+        }
+    });
+
+    var kendoGrid = $("#grid").data("kendoGrid");
+
+    $("#destroyButton").on("click", function() {
+        $("#grid").data("kendoGrid").destroy(); // destroy the Grid
+    });
+    $("#emptyButton").on("click", function() {
+        $("#grid").empty(); // empty the Grid content (inner HTML)
+    });
+    $("#showButton").on("click", function() {
+        $("#grid").kendoGrid(kendoGrid);
+        $("#grid").show();
+    });
+    $("#removeButton").on("click", function() {
+        $("#grid").remove(); // remove all Grid HTML
+    });
+    $("#valueButton").on("click", function() {
+        //alert(("#grid").text());
+    });
+</script>
+<br><br><br><br>
+
+</body>
+</html>

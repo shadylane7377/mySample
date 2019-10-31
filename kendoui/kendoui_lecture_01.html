@@ -1,0 +1,62 @@
+<!-- 
+    * Kendo UI 정리노트 01
+    * 작성 : 박종진
+-->
+
+<!-- HTML5 최신버전으로 doctype 선언 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>KENDO UI 정리노트</title>
+
+    <!-- KENDO UI 필수 JS, CSS include -->
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.common.min.css"/>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.rtl.min.css"/>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.default.min.css"/>
+
+    <!-- Kendo UI 현재 공식 버전에 호환되는 jQuery 버전은 1.12.4. 버전별 호환성 여부는 KENDO 홈페이지 참조 -->
+    <!-- kendo.all.min.js는 반드시jQuery 뒤에 선언해줘야 한다. 순서 중요. -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.1.220/js/kendo.all.min.js"></script>
+</head>
+<body>
+
+<h2>※ Widget Basics - Data Attributes (1)</h2>
+<h3>- KENDO UI Widget을 jQuery plugin으로 생성하고 초기화하는 방법을 알아본다.</h3>
+<br/>
+
+
+<!-- 01. Initialize the Kendo UI DatePicker by calling the kendoDatePicker jQuery plugin -->
+<h4>01. KENDO UI의 DatePicker 컴포넌트를 input 태그를 통해 생성하고 초기화한다.</h4>
+<p><input id="datepicker" /></p>
+<script>
+    $("#datepicker").kendoDatePicker();
+</script>
+<br>
+
+
+<!-- 02. instantiate a Kendo UI AutoComplete -->
+<h4>02. KENDO UI의 autoComplete 컴포넌트를 input 태그를 통해 초기값을 설정해서 생성한다.</h4>
+<p>(J.OBJ) Animal : <input id="animal" /> (ex. "Ant", "Antilope", "Badger", "Beaver", "Bird")</p>
+<p>(Array) Color : <input id="color" /> (ex. "red", "blue", "yellow", "white", "black", "gray")</p>
+<script>
+    $("#animal").kendoAutoComplete({ dataSource: [ "Ant", "Antilope", "Badger", "Beaver", "Bird" ] });  // JAVASCIRPT OBJECT
+    $("#color").kendoAutoComplete([ "red", "blue", "yellow", "white", "black", "gray" ]); // Array
+</script>
+<br>
+
+
+<!-- 03. Multiple Widgets with Single Selectors -->
+<h4>03. 모든 button태그를 kendoButton 컴포넌트로 일괄 생성이 가능하다. 또한 jQeury chaining 호출도 지원한다.</h4>
+<p><button>Foo</button> | <button>Bar</button></p>
+<script>
+    $("button").kendoButton();  // 모든 버튼을 KENDO 위젯으로 초기화시킨다.
+    // or
+    $("button").kendoButton().css("color", "red");  // 또는 초기화시킴과 동시에 Chaining jQuery Method Calls 가능하다.
+</script>
+<br/>
+
+
+</body>
+</html>

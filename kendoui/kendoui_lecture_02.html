@@ -1,0 +1,142 @@
+<!-- 
+    * Kendo UI 정리노트 02
+    * 작성 : 박종진
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>KENDO UI 정리노트</title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.common.min.css"/>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.rtl.min.css"/>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.default.min.css"/>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.1.220/js/kendo.all.min.js"></script>
+</head>
+<body>
+
+<h2>※ Widget Basics - Data Attributes (2)</h2>
+<h3>- KENDO UI Widget을 data-* 속성을 이용해서 생성하고 초기화하는 방법을 알아본다.</h3><br/>
+
+<!-- 01 data-role -->
+<h4>01. data-role attribute를 이용해서 KENDO UI Component를 생성하고 초기화시킨다.</h4>
+<p>numeric01 : <input id="numeric01" data-role="numerictextbox" /></p>
+<div id="sample01">
+    <p>numeric02 : <input id="numeric02" data-role="numerictextbox" /></p>
+    <p>numeric03 : <input id="numeric03" data-role="numerictextbox" /></p>
+</div>
+<script>
+    // data-role로 정의한 것은 아래 bind 함수를 통해 Kendo UI widget을 세팅해 주어야 한다.
+    kendo.bind($("#numeric01"));        // id로 직접 지정. 인자값 {} 는 해도 되고 안해도...
+    kendo.bind($("#sample01"), {});     // div 하위태그에 있는 모든 component에 적용함
+</script>
+<br>
+
+
+<!-- 02 data-* -->
+<h4>02. data-* attributes를 이용해 KENDO UI Component를 초기값을 지정해서 생성할 수 있다.</h4>
+<div id="sample02">
+    autocomplete : <input data-role="autocomplete"
+                            data-ignore-case="true" // 대소문자 구분없이 처리
+                            data-text-field="name"  // 선택시 보여줄 항목
+                            data-source="{data: [{name: 'John Doe'},{name: 'Jane Doe'}]}" /> (ex. Jane Doe)
+</div>
+<script>
+    kendo.bind($("#sample02"), {});
+</script>
+<br>
+
+
+<!-- 03 data-change -->
+<h4>03. data-change attribute를 이용해 KENDO UI Widget Event를 등록할 수 있다.(onChangeCompleted)</h4>
+<div id="sample03">
+    <p>change : <input data-role="numerictextbox" data-change="numerictextbox_change" /></p>
+    <p>change2 : <input data-role="numerictextbox" data-change="handler.numerictextbox_change2" /></p>
+</div>
+<script>
+    // widget event 방식으로 처리하는 방법
+    function numerictextbox_change(e) {
+        alert('changed');
+    }
+    // member function을 event handler로 처리하는 방법
+    var handler = {
+      numerictextbox_change2: function (e) {
+        alert('changed 2');
+      }
+    };
+    kendo.bind($("#sample03"));
+</script>
+<br>
+
+
+<!-- 04. data-source -->
+<h4>04. data-source attribute를 이용해 초기값을 등록할 수 있다.</h4>
+<div id="sample04">
+    <p>(variable) dataSource : <input data-role="autocomplete" data-source="dataSource" /> <= 'One', 'Two'</p>
+    <p>(JSON) dataSource : <input data-role="autocomplete" data-source="{data:['One', 'Two']}" /> <= 'One', 'Two'</p>
+    <p>(Array) dataSource : <input data-role="autocomplete" data-source="['One', 'Two']" /> <= 'One', 'Two'</p>
+    <!-- data-* 속성으로 설정 -->
+    <p>data-* : 
+        <input data-role="autocomplete"
+            data-ignore-case="true"
+            data-text-field="name"
+            data-source="{data: [{name: 'John Doe'},{name: 'Jane Doe'}]}" //JSON
+        /> <= 'John Doe'</p>
+    <!-- data-template 설정 -->
+    <p>data-* & template : 
+        <input data-role="autocomplete"
+            data-template="template"
+            data-text-field="firstName"
+            data-source="[{firstName:'John', lastName: 'Doe'}, {firstName:'Jane', lastName: 'Doe'}]"    //Array
+        /> <= 'John Doe'</p>
+</div>
+<script id="template" type="text/x-kendo-template">
+    <span>#: firstName # #: lastName #</span>
+</script>
+<script>
+    // dataSource variable
+    var dataSource = new kendo.data.DataSource({
+        data: [ "One", "Two" ]
+    });
+    
+    kendo.bind($("#sample04"), {});
+</script>
+<br>
+
+
+<!-- 05. SPA, MVVM, observable -->
+<h4>05. data-source, data-bind attributes를 이용해 초기값을 등록할 수 있다.</h4>
+<!-- 5-1. In Single-Page-Application (SPA) Views. -->
+<div id="container"></div>
+<script id="index" type="text/x-kendo-template">
+    <div>(template) Hello <input data-role="autocomplete" data-source="['foo', 'bar', 'baz']" />! (ex. 'foo', 'bar', 'baz')</div>
+</script>
+<script>
+    var index = new kendo.View('index');
+    index.render("#container");
+</script>
+
+<!-- 5-2. In MVVM -->
+<div id="container2">
+    <div>(MVVM) Hello <input data-role="autocomplete" data-bind="source: source" />!</div>
+</div>
+<script>
+    kendo.bind($("#container2"), { source: ['foo', 'bar', 'baz'] });
+</script>
+
+<!-- 5-3. observable -->
+<div id="container3">
+    <div>(observable) Hello <input data-role="autocomplete" data-bind="source: type" />!</div>
+</div>
+<script>
+    var viewModel = kendo.observable({
+        type : ['foo', 'bar', 'baz']
+    });
+
+    kendo.bind($("#container3"), viewModel);
+</script>
+<br><br>
+
+</body>
+</html>

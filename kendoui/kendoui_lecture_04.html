@@ -1,0 +1,117 @@
+<!-- 
+    * Kendo UI 정리노트 04
+    * 작성 : 박종진
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>KENDO UI 정리노트</title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.common.min.css"/>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.rtl.min.css"/>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.silver.min.css"/>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.1.220/styles/kendo.mobile.all.min.css"/>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.1.220/js/kendo.all.min.js"></script>
+</head>
+<body>
+
+<h2>※ MVVM Pattern - data-bind & observable</h2>
+<h4>- data-bind와 View-Model을 연동하는 방법을 알아본다.</h4>
+<h4>- binding은 DOM요소(또는 위젯) 속성과 View-Model의 필드 또는 메소드를 연결하는 것이다.</h4><br/>
+    
+    
+<!-- 01. creating a View-Model object -->
+<h3>01. kendo.observable 함수를 사용해서 View-Model을 선언하고 #view에 반영한다.</h3>
+<div id="view">
+    <input data-bind="value: name" />
+    <button data-bind="click: displayGreeting">Display Greeting</button>
+</div>
+<script>
+    // viewModel 생성
+    var viewModel = kendo.observable({
+        name: "John Doe",
+        displayGreeting: function() {
+            var name = this.get("name");
+            alert("Hello, " + name + "!!!");
+        }
+    });
+    kendo.bind($("#view"), viewModel);  // bind 함수를 통해 viewModel을 #view에 반영한다.
+</script>
+<br>
+
+
+<!-- 02. data binding to nested View-Model fields -->
+<h3>02. 중첩된 View-Model 필드에 대한 데이터 바인딩을 지원한다.</h3>
+<div id="view2" data-bind="text: person.name"></div>
+<script>
+    var viewModel2 = kendo.observable({
+        person: {
+            name: "John Doe"
+        }
+    });
+    kendo.bind($("#view2"), viewModel2);
+</script>
+<br>
+
+
+<!-- 03. Bindings are not JavaScript code. -->
+<h3>03. View에 표시하기 전에 View-Model의 값을 처리해야하는 경우 메소드를 만들어 사용한다.</h3>
+<div id="view3" data-bind="text: person.lowerCaseName"></div>
+<script>
+    var viewModel3 = kendo.observable({
+        person: {
+            name: "John Doe",
+            lowerCaseName: function() {
+                return this.get("name").toLowerCase();
+            }
+        }
+    });
+    kendo.bind($("#view3"), viewModel3);
+</script>
+<br>
+
+
+<!-- 04. ObservableObject -->
+<h3>04. SET, GET</h3>
+<script>
+    // create a new instance of the kendo.data.ObservableObject
+    // kendo.data.ObservableObject 유형의 새 인스턴스를 만들거나 kendo.observable 메소드 사용해서 생성한다.
+    // 아래와 같이 viewModel4와 viewModel5의 결과는 동일하다.
+    var viewModel4 = new kendo.data.ObservableObject( {
+        field1: "value1",
+        field2: "value2"
+    });
+    var viewModel5 = kendo.observable( {
+        field1: "value1",
+        field2: "value2"
+    });
+
+    // viewModel6
+    var viewModel6 = kendo.observable({
+        name: "John Doe"
+    });
+    var name = viewModel6.get("name");   // Getting Field Values
+    document.write("viewModel6 : " + name); // shows "John Doe"
+
+    viewModel6.set("name", "Jane Doe"); //set the "name" field to "Jane Doe"
+    document.write("<br>viewModel6 : " + viewModel6.get("name")); // shows "John Doe"
+    document.write("<br><br>");
+
+    // viewModel7
+    var viewModel7 = kendo.observable({
+        person: {
+            name: "John Doe"
+        }
+    });
+    var personName = viewModel7.get("person.name");
+    document.write("viewModel7 : " +personName); // shows "John Doe"
+
+    viewModel7.set("person.name", "Jane Doe");
+    document.write("<br>viewModel7 : " +viewModel7.get("person.name")); // shows "John Doe"
+</script>
+
+
+</body>
+</html>
