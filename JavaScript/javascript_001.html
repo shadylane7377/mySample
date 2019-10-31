@@ -1,0 +1,25 @@
+<script>
+    var val01 = "text";             // string
+    var val02 = 100;                // number (integer)
+    var val03 = 3.14159;            // number (real)
+    var val04 = true;               // boolean
+    var val05 = new Date();         // object (date)
+    var val06 = ['A', 'B', 'C'];    // object (array)
+
+    var val07 = function() {        // function
+        console.log('test');
+    }
+
+
+    // ######################################################
+    // log
+    console.log("val01 = " + val01 + ", type=" + (typeof val01));
+    console.log("val02 = " + val02 + ", type=" + (typeof val02));
+    console.log("val03 = " + val03 + ", type=" + (typeof val03));
+    console.log("val04 = " + val04 + ", type=" + (typeof val04));
+    console.log("val05 = " + val05 + ", type=" + (typeof val05));
+    console.log("val06 = " + val06 + ", val06[0]=" + val06[0] + ", type=" + (typeof val06));
+
+    val07();
+    console.log("val07 = " + (typeof val07));
+</script>

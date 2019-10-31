@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!--
+    자바스크립트 정규식
+
+    1. 특수문자
+    ^	입력의 시작 부분과 대응된다.	/^시작/ → 시작했다 시작
+    $	입력의 끝 부분과 대응된다.	 /끝$/ → 끝났다 끝
+    *	표현식이 0회 이상 연속으로 반복되는 부분과 대응된다.	/ab*c/ → cbbabbbbcdebc, acbd
+    +	표현식이 1회 이상 연속으로 반복되는 부분과 대응된다.	/ab+c/ → cbbabbbbcdebc, acbd
+    ?	표현식이 0 또는 1회 등장하는 부분과 대응된다. {0,1} 과 같다. 있어도 ok, 없어도 ok 이라고 생각하면 편하다	/010?/ → 01, 010, 011
+    .	개행 문자를 제외한 모든 단일 문자와 대응된다.	/hi./ → hi, hi1, hi2, hi12, hi 
+    (x)	패턴의 부분을 나누는 것. 포맷팅에 유용하게 쓰인다.	
+        /(a)(b)/ → ab
+        replace(/(a)(b)/,'$1-$2') → a-b
+    x|y	| 는 or 와 동일한 기능을 하며, 하나라도 있을 시 대응된다.	/fuck|suck|dick/ → fuckyou, suckyou
+    {n}	표현식이 n번 나타나는 부분에 대응된다.	/(hi){2}/ → hi, hihi, hi hi
+    {n,m}	표현식이 n번~m번 나오는 부분과 대응된다.	/(hi){2,3}/ → hi,hihi,hihihi,hihihihi
+    [abc]	대괄호 안의 문자가 하나라도 있을시 대응된다.	/[abc]/g → a,ab,abc
+
+    2. 확장문자 (: backslash)
+    - s : 공백 문자(스페이스, 탭, 폼 피드, 라인 피드)
+    - b : 단어의 경계
+    - B 이를 제외한 모든 문자 매칭
+    - d : 숫자
+    - D : 숫자가 아닌 문자 [^0-9] 와 동일
+    - w : 알파벳, 숫자로 된 문자, 밑줄 기호(_) [A-Za-z0-9]
+    - W : w의 반대 문자 [^A-Za-z0-9]
+    - 특수문자 : 특수문자 자체를 의미 예) + (+ 기호 자체)
+
+    3. 플래그
+    g 모든 전역 (첫번째 일치하는 문자열을 찾아도 끝까지 찾는다) 
+    i 대소문자 구분 없이 m 멀티라인도 수행 
+    u 패턴을 유니코드 코드 포인트의 나열로 취급 
+    y "stick" 검색을 수행, 지정된 인덱스로 문자열 검색
+
+    4. 기타
+    - () : 괄호로 묶인 패턴은 매칭된 다음, 그 부분을 기억한다.
+    - $1,...,$9 : 괄호로 갭처한 부분 문자열이 저장 됨.
+    - | : ~또는~
+    - {} : 반복 횟수
+
+    5. 정규식 메소드
+    exec	pattern.exec(String)	패턴을 String에 적용하여 실행시킨다.
+    test	pattern.test(String)	패턴을 String에 적용시킨 결과가 존재하는지 true와 false로 출력시킨다
+    replace	String.replace(pattern,'type')	패턴을 String에 적용시키고 type으로 치환한다.
+-->
+
+"paemet_tre@tello.com"
+
+<script>
+/*
+정규식을 만드는 방법은 두 가지가 있습니다.
+정규식을 슬래쉬(/)로 감싸는 패턴을 사용하는 방법
+var re = /ab+c/;
+정규식이 스크립트가 불러와질 때 컴파일되며 상수라면 성능을 향상시킬 수 있습니다.
+
+RegExp 객체의 생성자 함수를 호출하는 방법
+var re = new RegExp("ab+c");
+생성자 함수를 사용하면 정규식이 실행 시점에 컴파일됩니다.
+
+정규식의 패턴이 변경될 수 있는 경우, 사용자 입력과 같이 다른 출저로 부터 패턴을 가져와야하는 생성자 함수를  사용하시면 됩니다.
+*/
+
+var str = "paemet_tre@tello.com";
+console.log("search: ", str.search(/TRE/i));    // 대소문자 무시
+console.log("search2: ", str.search(/TRE/));    // 대소문자 체크
+
+
+//이메일 정규식
+var emailRule = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+var str02 = "paemet_ tre.123@tello.com";
+
+if(!emailRule.test(str02)) {           
+    console.log("wrong emailRule.");
+} else {
+    console.log("correct email");
+}
+
+// 비밀번호 정규식
+var passRule = /^[A-Za-z0-9]{6,12}$/;//숫자와 문자 포함 형태의 6~12자리 이내의 암호 정규식
+if(!passRule.test($("input[id='PASS']").val())) {
+    console.log("wrong passRule.");
+}
+
+// 특수문자 / 문자 / 숫자 포함 형태의 8~15자리 이내의 암호 정규식
+var regex = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+
+// 일반 아이디나 비밀번호 정규식 
+var regExp = /^[a-z0-9_]{4,20}$/;
+
+// 휴대폰 정규식
+var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
+
+// 일반전화 정규식
+var regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
+
+// 모든 공백 체크 정규식
+var regExp = /\s/g;
+
+// 숫자만 체크 정규식
+var regExp = /^[0-9]+$/;
+
+
+
+//[문자열 중 숫자만 추출 / 문자열 중 문자만 추출]
+var a = "abc123";
+var b = a.replace(new RegExp("[(0-9)]", "gi"), "");
+console.log(b);  // abc
+var c = a.replace(new RegExp("[^(0-9)]", "gi"), "");
+console.log(c); // 123
+
+//[천단위 콤마 찍기]
+var a = "10000000";
+var b = a.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+console.log(b); // 10,000,000
+ 
+
+//[URL / 이메일 하이퍼링크 치환]
+var container = document.getElementById(id);
+var doc = container.innerHTML;
+var regURL = new RegExp("(http|https|ftp|telnet|news|irc)://([-/.a-zA-Z0-9_~#%$?&=:200-377()]+)","gi");
+var regEmail = new RegExp("([xA1-xFEa-z0-9_-]+@[xA1-xFEa-z0-9-]+\.[a-z0-9-]+)","gi");
+container.innerHTML = doc.replace(regURL,"<a href='$1://$2' target='_blank'>$1://$2</a>").replace(regEmail,"<a href='mailto:$1'>$1</a>");
+ 
+
+//[모든 공백 제거]
+var data = "a b    c        d";
+data = data.replace(/\n/g, "");        //행바꿈제거
+data = data.replace(/(\s*)/g, "");  //모든 공백 제거
+data = data.replace(/\r/g, "");        //엔터제거
+console.log(data); // abcd
+
+</script>

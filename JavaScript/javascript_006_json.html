@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+    자바스크립트 json과 object 관계
+
+    JSON.stringify(obj)  // object를 string 문자열로 변환
+    JSON.parse(str)      // string 문자열을 object로 변환
+-->
+<script>
+    // case1. object
+    console.log("CASE 1. ===================================");
+    var obj01  = new Object();
+    obj01.name = "John";
+    obj01.old  = 20;
+
+    var str01 = JSON.stringify(obj01);
+    console.log("JSON.stringify => " + str01);   // {"name":"John","old":20}
+    var toObj01 = JSON.parse(str01);
+    console.log("obj01.name=" + obj01.name + ", toObj01.name=" + toObj01.name);
+
+
+    // case2. object
+    console.log("CASE 2. ===================================");
+    var obj02 = {
+        name: "John",
+        old: 20
+    }
+    var str02 = JSON.stringify(obj02);
+    console.log("JSON.stringify => " + str02);   // {"name":"John","old":20}
+    var toObj02 = JSON.parse(str02);
+    console.log("obj01.name=" + obj02.name + ", toObj02.name=" + toObj02.name);
+
+
+    // case3. object로 구성된 배열
+    console.log("CASE 3. ===================================");
+    var obj03 = [
+                {name: "Kim", age: 30},
+                {name: "Lee", age: 40}
+                ];
+    var str03 = JSON.stringify(obj03);
+    console.log("JSON.stringify => " + str03); 
+    var toObj03 = JSON.parse(str03);
+    console.log("toObj03[0].name=" + toObj03[0].name + ", toObj03[1]['name']=" + toObj03[1]["name"]);
+
+
+    // case4. object 배열
+    console.log("CASE 4. ===================================");
+    var obj04 = {
+        name: "John",
+        old: 20,
+        birth: [1973, 4, 30],
+        eye: function() { return "brown"; }
+    }
+    var str04 = JSON.stringify(obj04);
+    console.log("JSON.stringify => " + str04);  // eye는 str로 변환되지 않음.
+
+
+</script>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+    자바스크립트 array
+-->
+<script>
+    var arr01 = []; //선언
+    arr01[0] = 1;
+    arr01[1] = 3;
+    arr01[2] = 5;
+    console.log("arr01:", arr01);
+    console.log("arr01.length=" + arr01.length);
+
+    var arr02 = [1, 2, 3, 4, 5]; // 선언과 동시에 할당
+    arr02[4] = 10; //이제부터 array 4번 key의 값은 12다. 
+    console.log("arr02:", arr02);
+
+    var arr03 = [1, 2, 3, 4, 5];
+    arr03.push(20, 30);
+    console.log("arr03:", arr03 + ", length=" + arr03.length);
+    arr03.pop();
+    console.log("arr03:", arr03 + ", length=" + arr03.length);
+
+    var arr04 = ["A", "B", "C", "D"];
+    console.log("arr04:", arr04);
+    arr04.forEach(function(value) {
+        console.log("arr04:", value);
+    }); //결과는 1부터 10까지 출력
+
+    var arr05 = [1, 2, 3, "A", "B"];
+    console.log("arr05:", arr05);
+
+    arr05.splice(3,4, 10, 20);
+    console.log("arr05:", arr05);
+
+    var arr06 = arr05.slice(1, 3);
+    console.log("arr06:", arr06);
+
+    var arr07 = arr04.concat(arr05, arr06);
+    console.log("arr07:", arr07);
+
+    console.log(arr07.sort());
+
+    //console.log(arr07.indexOf("10"));
+
+    // 2차원 배열
+    var arr08 = [ [1, 2, 3], ["A", "B"] ];
+    console.log("arr08:", arr08);
+    console.log("arr08[0]=", arr08[0]);
+
+</script>

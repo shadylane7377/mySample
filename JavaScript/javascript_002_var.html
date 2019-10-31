@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+    자바스크립트 const, var, let
+-->
+<script>
+    // const
+    const TITLE = "HELLO";          // constant
+    //TITLE = "HI";                 // 상수 값 변경시 에러가 발생한다.
+
+
+    // var vs let
+    var test1 = "HELLO";
+    var test1 = "HI";               // 재정의가 가능하다.
+    console.log(test1);             // HI가 찍힌다.
+
+    let test2 = "HELLO";
+    //let test2 = "HI";             // 에러. Let/Const는 redeclaration 할 수 없다.
+
+
+    // 인터넷에 자료 찾아보면 var과 let는 scope 처리가 다른 것처럼 설명하는 분들이 있는데 
+    // 아래 예제와 같이 { } 안에 var, let 선언할 때와 안할때 결과는 동일하게 나온다.
+    // 결론은 소스가 복잡해질 수록 변수를 실수로 중복되게 선언하여 오류가 발생하지 않도록
+    // 전역변수를 let로 선언해서 쓰는 방법도 괜찮지 않을까 생각함.
+    // 1. var
+    var name = "John";      // 전역변수
+    var name2 = "John";     // 전역변수
+    name3 = "John";         // 전역변수
+    function sayName() {
+        var name = "Peter"; // 지역변수
+        name2 = "Peter";
+        name3 = "Peter";
+        console.log(name + ", " + name2+ ", " + name3);  // Peter, Peter, Peter
+    }
+    sayName();
+    console.log(name + ", " + name2+ ", " + name3);  // John, Peter, Peter
+
+    // 2. let
+    let hello  = 100;       // 전역변수
+    let hello2 = 100;       // 전역변수
+    function letTest() {
+        let hello = 10;     // 지역변수
+        hello2 = 10;
+        console.log("hello=" + hello + ", hello2=" + hello2); // 10, 10
+        sayHello();
+    }
+    function sayHello() {
+        let hello = 30;     // 지역변수
+        console.log("hello=" + hello + ", hello2=" + hello2); // 30, 10
+    }
+    letTest();
+    console.log("hello=" + hello + ", hello2=" + hello2); // 100, 10
+
+
+    
+    // ######################################################
+    // log
+
+    // ######################################################
+</script>

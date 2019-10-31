@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+    자바스크립트 type
+-->
+<script>
+    var val01 = "text";             // string
+    var val02 = 100;                // number (integer)
+    var val03 = 3.14159;            // number (real)
+    var val04 = true;               // boolean
+
+    var val05 = ['A', 'B', 'C'];    // object (array)  
+    var val06 = new Date();         // object (date)
+  
+    var val07 = function() {        // function
+        return "test";
+    }
+
+    var var08;                      // undefined
+    //console.log("val08 = " + val08);  // undefined를 출력하려면 에러가 난다.
+
+
+    // ######################################################
+    // log
+    console.log("val01 = " + val01 + ", type=" + (typeof val01));
+    console.log("val02 = " + val02 + ", type=" + (typeof val02));
+    console.log("val03 = " + val03 + ", type=" + (typeof val03));
+    console.log("val04 = " + val04 + ", type=" + (typeof val04));
+    console.log("val05 = " + val05 + ", val05[0]=" + val05[0] + ", type=" + (typeof val05));
+    console.log("val06 = " + val06 + ", type=" + (typeof val06));
+    console.log("val07 = " + val07() + ", type=" + (typeof val07));
+    console.log("val08 type=" + (typeof val08));
+    // ######################################################
+</script>

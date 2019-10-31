@@ -1,0 +1,39 @@
+<script>
+        // Object() 생성자 함수를 이용해서 object 생성.
+        var obj01 = new Object();
+        obj01.name = "John";
+        obj01.old = 20;
+        obj01.toString = function() {
+            console.log("obj01[name=" + obj01.name + ", old=" + obj01.old + "]" );
+        }
+    
+        // 객체 리터럴 방식으로 object 생성.
+        var obj02 = {
+            name: "John"
+           ,old: 20
+           ,toString: function() {
+                console.log("obj02[name=" + this.name + ", old=" + this.old + "]" );
+           }
+        };
+    
+    
+        // ######################################################
+        // log
+        console.log("obj01 = " + (typeof obj01)
+                    + ", obj01.name=" + obj01.name 
+                    + ", obj01['old']=" + obj01["old"]
+                    );
+        obj01.toString();
+        
+        console.log("obj02 = " + (typeof obj02)
+                    + ", obj02.name=" + obj02.name 
+                    + ", obj02['old']=" + obj02["old"]
+                    );
+        obj02.toString();
+    
+        console.log('prop =>');
+        var prop;
+        for(prop in obj02) {
+            console.log(prop, obj02[prop]);
+        }
+    </script>
