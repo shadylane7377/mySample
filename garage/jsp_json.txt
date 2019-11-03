@@ -1,0 +1,52 @@
+// Controller.java
+import org.json.simple.JSONObject;
+
+@SuppressWarnings("unchecked")
+@RequestMapping(value = "/json.do", method = {RequestMethod.POST, RequestMethod.GET})
+ public  @ResponseBody Object detailInfo(
+			@RequestParam(value="contract_id", required=false)String contract_id,			   
+			HttpSession session,
+			HttpServletRequest req,
+			HttpServletResponse res)
+{
+			JSONObject json = new JSONObject();
+			ContractBean command = null;
+			List logList = null;
+	try{
+			command = contractDao.selectContractInfo(contract_id); // 계약상세정보 
+			logList = contractDao.selectLogInfoList(contract_id);//계약상세로그
+			
+			json.put("command", command);
+			json.put("logList", logList);
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+	return json;
+}
+
+
+// JSP
+function fn_popup(contract_id) {
+	$.ajax({
+		url : "/json.do",
+		type : "POST",
+		dataType : "json",
+		data : "contract_id=" + contract_id,
+		success : function(data) {
+			$.each(data, function(key, value) { //  { logList:[{}], command:{} } 이런구조임
+				if (key == "logList") {
+					for (var i = 0; i < value.length; i++) {
+						alert(value[i].access_ip);
+					}
+				} else if (key == "command") {
+					$('#doc_nm').append(value.doc_nm);
+					$('#contract_id').append(
+							value.contract_id);
+				}
+			});
+		},
+		error : function(msg) {
+			alert("error" + msg);
+		}
+	});
+}

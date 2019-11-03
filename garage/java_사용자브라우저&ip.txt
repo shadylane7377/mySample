@@ -1,0 +1,44 @@
+// 사용자 브라우저 구하기
+protected String getBrowserInfo(HttpServletRequest req, String browser) {
+		try {
+			String browserInfo = req.getHeader("User-Agent"); // 사용자 User-Agent 값 얻기
+			
+			if (browserInfo != null) {
+				if (browserInfo.indexOf("Trident") > -1) {
+					browser = "MSIE";
+				} else if (browserInfo.indexOf("Chrome") > -1) {
+					browser = "Chrome";
+				} else if (browserInfo.indexOf("Opera") > -1) {
+					browser = "Opera";
+				} else if (browserInfo.indexOf("iPhone") > -1
+						&& browserInfo.indexOf("Mobile") > -1) {
+					browser = "iPhone";
+				} else if (browserInfo.indexOf("Android") > -1
+						&& browserInfo.indexOf("Mobile") > -1) {
+					browser = "Android";
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return browser;
+	}
+
+
+// 사용자 IP 구하기
+protected String getLocalServerIp(HttpServletRequest req, String reg_ip) {
+	try {
+		String clientIp = req.getHeader("HTTP_X_FORWARDED_FOR");
+		if (null == clientIp || clientIp.length() == 0
+				|| clientIp.toLowerCase().equals("unknown")) {
+			reg_ip = req.getHeader("REMOTE_ADDR");
+		}
+		if (null == clientIp || clientIp.length() == 0
+				|| clientIp.toLowerCase().equals("unknown")) {
+			reg_ip = req.getRemoteAddr();
+		}
+	} catch (Exception e) {
+
+	}
+	return reg_ip;
+}
